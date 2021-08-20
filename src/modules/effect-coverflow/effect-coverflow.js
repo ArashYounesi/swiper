@@ -2,7 +2,7 @@ import createShadow from '../../shared/create-shadow.js';
 import effectInit from '../../shared/effect-init.js';
 import effectTarget from '../../shared/effect-target.js';
 
-export default function EffectCoverflow({ swiper, extendParams, on }) {
+export default function EffectCoverflow({swiper, extendParams, on}) {
   extendParams({
     coverflowEffect: {
       rotate: 50,
@@ -16,7 +16,7 @@ export default function EffectCoverflow({ swiper, extendParams, on }) {
   });
 
   const setTranslate = () => {
-    const { width: swiperWidth, height: swiperHeight, slides, slidesSizesGrid } = swiper;
+    const {width: swiperWidth, height: swiperHeight, slides, slidesSizesGrid} = swiper;
     const params = swiper.params.coverflowEffect;
     const isHorizontal = swiper.isHorizontal();
     const transform = swiper.translate;
@@ -41,7 +41,11 @@ export default function EffectCoverflow({ swiper, extendParams, on }) {
       if (typeof stretch === 'string' && stretch.indexOf('%') !== -1) {
         stretch = (parseFloat(params.stretch) / 100) * slideSize;
       }
+
       let translateY = isHorizontal ? 0 : stretch * offsetMultiplier;
+      if (params?.translateY)
+        translateY = params.translateY * offsetMultiplier;
+
       let translateX = isHorizontal ? stretch * offsetMultiplier : 0;
 
       let scale = 1 - (1 - params.scale) * Math.abs(offsetMultiplier);
@@ -82,7 +86,7 @@ export default function EffectCoverflow({ swiper, extendParams, on }) {
     }
   };
   const setTransition = (duration) => {
-    const { transformEl } = swiper.params.coverflowEffect;
+    const {transformEl} = swiper.params.coverflowEffect;
     const $transitionElements = transformEl ? swiper.slides.find(transformEl) : swiper.slides;
     $transitionElements
       .transition(duration)
